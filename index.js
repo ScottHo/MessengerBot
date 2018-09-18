@@ -33,7 +33,7 @@ app.post("/webhook", function (req, res) {
     req.body.entry.forEach(function(entry) {
       // Iterate over each messaging event
       entry.messaging.forEach(function(event) {
-        if (event.messages) {
+        if (event.message) {
           messageReceived(event);
         }
       });
@@ -46,27 +46,10 @@ app.post("/webhook", function (req, res) {
 
 function messageReceived(event) {
   var senderId = event.sender.id;
-  var payload = event.postback.payload;
+  console.log("Message Receieved");
 
-  if (payload === "Greeting") {
-    // Get user's first name from the User Profile API
-    // and include it in the greeting
-    request({
-      url: "https://graph.facebook.com/v2.6/" + senderId,
-      qs: {
-        access_token: process.env.PAGE_ACCESS_TOKEN,
-        fields: "first_name"
-      },
-      method: "GET"
-    }, function(error, response, body) {
-      var greeting = "";
-      if (error) {
-        console.log("Error getting user's name: " +  error);
-      }
-      var message = "Yo.";
-      sendMessage(senderId, {text: message});
-    });
-  }
+  var message = "Yo.";
+  sendMessage(senderId, {text: message});
 }
 
 // sends message to user
